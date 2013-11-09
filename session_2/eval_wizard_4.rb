@@ -68,6 +68,11 @@ class EvalWizarrrd
     end
   end
 
+  # Just a regular spell, no big deal.
+  spell :fireball do
+    damage 200
+  end
+
 end
 
 
@@ -80,3 +85,7 @@ puts spell.cast
 ew.level_up!
 puts spell.cast
 # => Hit Atta Mott with lightning_bolt for 278.632 damage!!!
+
+puts ew.fireball("Mister Pojstaz").cast
+# => Hit Mister Pojstaz with fireball for 200 damage!!!
+
