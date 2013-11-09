@@ -1,10 +1,18 @@
 module Magic
+
+  # Now `spell` creates new methods!
   def spell name, &blk
-    spell = Spell.new(name)
-    yield spell if block_given?
-    spell
+    # Create a new instance method that encapsulates
+    # the previous behavior, with a nicer DSL.
+    define_method(name) do |tgt|
+      spell = Spell.new(name)
+      spell.target tgt
+      spell.instance_eval &blk if blk
+      # yield spell if block_given?
+      spell
+    end
   end
-  
+
   class Spell
     attr_reader :name
     def initialize(name)
@@ -27,7 +35,7 @@ module Magic
 end
 
 class EvalWizarrrd
-  include Magic
+  extend Magic
   attr_reader :level
   def initialize
     @level = 1
@@ -37,20 +45,18 @@ class EvalWizarrrd
     @level += 1
   end
 
-
-  def lightning_bolt(tgt)
-    spell("Lighting Bolt!!! ZAPP!!!") do |sp|
-      sp.target tgt
-      sp.damage do
-        rand(111) + ((level * 1.085) * 35)
-      end
-    end
+  # We just converted `spell` into a class method!
+  # Now EvalWizarrrd can describe the spells its
+  # instances can cast.
+  # I'd say this combines a "class macro" and a DSL:
+  spell :lightning_bolt do
+    damage 111
   end
 
 end
 
-ew = EvalWizarrrd.new
-# => #<EvalWizarrrd:0x007fb2e3814d70>
 
-# ew.lightning_bolt("Matt Otto").cast
-# NameError: undefined local variable or method `level' for #<EvalWizarrrd::Spell:0x007fdadc018790>
+ew = EvalWizarrrd.new
+
+puts ew.lightning_bolt("Atta Mott").cast
+# => Hit Atta Mott with lightning_bolt for 111 damage!!!

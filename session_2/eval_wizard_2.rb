@@ -24,9 +24,10 @@ class EvalWizarrrd
       target tgt
       damage do
         # We want dynamic damage, based on the EvalWizarrrrd#level.
-        # Problem is, `instance_eval` up there has flattened.
+        # Problem is, `instance_eval` up there has removed
+        # EvalWizarrrrd from our scope. 
         # That's why we need to stash `self` in `_self`, which is
-        # enclosed by this block.
+        # enclosed by this block as a local variable.
         100 + rand(111) * (_self.level * 0.827)
       end
     end
