@@ -16,8 +16,8 @@ puts yield_me { outside }
 # => nil
 
 callable = lambda { |inside| outside + inside }
-callable.call(1)
+puts callable.call(1)
 # => 43
 
-(1..3).map { |n| callable.call(n) }
+puts (1..3).map { |n| callable.call(n) }
 # => [43, 44, 45]

@@ -28,7 +28,7 @@ class EvalWizarrrd
         # EvalWizarrrrd from our scope. 
         # That's why we need to stash `self` in `_self`, which is
         # enclosed by this block as a local variable.
-        100 + rand(111) * (_self.level * 0.827)
+        100 + (rand(111) * (_self.level * 0.827))
       end
     end
   end
